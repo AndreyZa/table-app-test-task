@@ -22,6 +22,9 @@ module.exports = {
       jsx: true,
     },
   },
+  rules: {
+    'react/prop-types': 0,
+  },
   env: {
     node: true,
     browser: true,

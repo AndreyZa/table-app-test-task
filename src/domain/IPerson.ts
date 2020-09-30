@@ -5,4 +5,5 @@ export interface IPerson {
   phone: string;
   gender: boolean; // male - true ; female -false
   age: number;
+  id: number;
 }
