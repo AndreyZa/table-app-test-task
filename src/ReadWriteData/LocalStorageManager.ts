@@ -21,7 +21,7 @@ export class LocalStorageManager implements IEditable {
   public read<T>(): T {
     let data: string | null = localStorage.getItem(this.nameOfEntry);
     if (!data) {
-      data = '{ people: [] }';
+      data = '{ "people": [] }';
     }
 
     return JSON.parse(data);
