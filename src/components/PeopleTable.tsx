@@ -8,7 +8,7 @@ export const PeopleTable: React.FC = () => {
   const people = useSelector((state: IPersonStore) => state.people);
 
   return (
-    <table>
+    <table className="table table-bordered">
       <thead>
         <tr>
           {['Id', 'First Name', 'Last Name', 'Phone', 'Gender', 'Age'].map(
