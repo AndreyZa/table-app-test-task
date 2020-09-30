@@ -6,5 +6,5 @@ export interface IPersonStore {
 
 export type PersonAction = {
   type: string;
-  payload?: string | boolean | number | IPerson[];
+  payload?: string | boolean | number | IPerson | IPerson[];
 };

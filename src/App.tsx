@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { PeopleActions } from './store/PeopleActions';
-import { PeopleTable } from './components/PeopleTable';
+// import { PeopleTable } from './components/PeopleTable';
+import { PeopleForm } from './components/PeopleForm';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,8 @@ const App: React.FC = () => {
 
   return (
     <div id="app">
-      <PeopleTable />
+      <PeopleForm />
+      {/* <PeopleTable /> */}
     </div>
   );
 };
