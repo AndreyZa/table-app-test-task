@@ -1,7 +1,6 @@
 import {
   FETCH_PEOPLE_STARTED,
   FETCHED_PEOPLE_SUCCESSFULLY,
-  SAVE_PEOPLE,
   ADD_PERSON,
   DELETE_PERSON,
 } from './actions';
@@ -16,10 +15,6 @@ export class PeopleActions {
   public static fetchedPeopleSuccessfully = (payload: IPerson[]): PersonAction => ({
     type: FETCHED_PEOPLE_SUCCESSFULLY,
     payload,
-  });
-
-  public static savePeople = (): PersonAction => ({
-    type: SAVE_PEOPLE,
   });
 
   public static addPerson = (payload: IPerson): PersonAction => ({

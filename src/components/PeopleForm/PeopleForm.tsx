@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { randomNum } from '../utils';
-import { PeopleActions } from '../store/PeopleActions';
+import { validate } from 'validate.js';
+import { peopleFormValidate, IErrorValidation } from './validate';
+import { randomNum } from '../../utils';
+import { PeopleActions } from '../../store/PeopleActions';
 
 export interface IPeopleFormState {
   [key: string]: string | boolean | number;
@@ -9,12 +11,13 @@ export interface IPeopleFormState {
   lastName: string;
   phone: string;
   gender: boolean;
-  age: number;
+  age: string;
 }
 
-// @TODO: styles for table and form
 export const PeopleForm: React.FC = () => {
   const [peopleFormState, setState] = useState<IPeopleFormState>(clearState());
+
+  const dispatch = useDispatch();
 
   function clearState(): IPeopleFormState {
     return {
@@ -22,7 +25,7 @@ export const PeopleForm: React.FC = () => {
       lastName: '',
       phone: '',
       gender: true,
-      age: 0,
+      age: '',
     };
   }
 
@@ -33,25 +36,68 @@ export const PeopleForm: React.FC = () => {
 
     setState({
       ...peopleFormState,
-      [event.target.name]: event.target.name !== 'age' ? value : Number(value),
+      [event.target.name]: value,
     });
   };
 
-  const dispatch = useDispatch();
+  const showUserHisErrors = (validateError: IErrorValidation): void => {
+    // clean up error effects on element if it now valid
+    [...document.querySelectorAll('.form-control')]
+      .filter((element: Element) => !Object.keys(validateError).includes(element.id))
+      .map((element: Element) => {
+        element.classList.remove('incorrect-form-field');
+        return element;
+      })
+      .forEach(({ parentElement }: Element) =>
+        parentElement?.classList.remove('show-validation-errors')
+      );
 
-  const valid = (elements: HTMLFormControlsCollection): boolean => {
-    // todo validation
-    return false;
+    Object.keys(validateError)
+      .map((name: string) => [document.querySelector(`input[name="${name}"]`), name])
+      .map(([input, name]) => {
+        ((input as Element).nextElementSibling as Element).textContent = '';
+        ((input as Element).nextElementSibling as Element).textContent = validateError[
+          name as string
+        ].join(', ');
+        return input as Element;
+      })
+      .forEach((input: Element | null) => {
+        (input as Element).parentElement?.classList.add('show-validation-errors');
+        (input as Element).classList.add('incorrect-form-field');
+      });
   };
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Submit event');
+
+    const somethingInvalid: IErrorValidation | undefined = validate(
+      peopleFormState,
+      peopleFormValidate
+    );
+
+    if (somethingInvalid) {
+      showUserHisErrors(somethingInvalid);
+      return;
+    }
 
     const id = randomNum(1000);
 
-    dispatch(PeopleActions.addPerson({ ...peopleFormState, id }));
+    dispatch(PeopleActions.addPerson({ ...peopleFormState, age: Number(peopleFormState.age), id }));
     setState(clearState());
+
+    // some dom work
+    // after successfullysubmit event of form we need clean up
+    // all error-visual-efffects
+
+    // inputs
+    document
+      .querySelectorAll('.form-control')
+      .forEach((formControl: Element) => formControl.classList.remove('incorrect-form-field'));
+
+    // form-groups
+    document
+      .querySelectorAll('.form-group')
+      .forEach((formGroup: Element) => formGroup.classList.remove('show-validation-errors'));
   };
 
   return (
@@ -66,6 +112,7 @@ export const PeopleForm: React.FC = () => {
           value={peopleFormState.firstName}
           onChange={changeHandler}
         />
+        <small className="form-text text-danger">Error</small>
       </div>
       <div className="form-group">
         <label htmlFor="lastName">Last Name</label>
@@ -77,6 +124,7 @@ export const PeopleForm: React.FC = () => {
           value={peopleFormState.lastName}
           onChange={changeHandler}
         />
+        <small className="form-text text-danger">Error</small>
       </div>
       <div className="form-group">
         <label htmlFor="phone">Phone</label>
@@ -87,7 +135,9 @@ export const PeopleForm: React.FC = () => {
           className="form-control"
           value={peopleFormState.phone}
           onChange={changeHandler}
+          placeholder={'380123456789'}
         />
+        <small className="form-text text-danger">Error</small>
       </div>
       <div className="form-check form-check-inline">
         <input
@@ -113,16 +163,17 @@ export const PeopleForm: React.FC = () => {
           Female
         </label>
       </div>
-      <div className="form-group">
+      <div className="form-group age-form-group">
         <label htmlFor="age">Age</label>
         <input
-          type="number"
+          type="text"
           name="age"
           id="age"
           className="form-control"
           value={peopleFormState.age}
           onChange={changeHandler}
         />
+        <small className="form-text text-danger">Error</small>
       </div>
       <button type="submit" className="btn btn-primary">
         Submit

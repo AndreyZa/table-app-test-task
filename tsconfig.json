@@ -13,7 +13,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "checkJs": false
+    "checkJs": false,
+    "downlevelIteration": true
   },
   "include": ["src", ".eslintrc.js"],
   "exclude": ["node_modules"]

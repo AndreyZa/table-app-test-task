@@ -39,35 +39,40 @@ export const PeopleTable: React.FC = () => {
   };
 
   return (
-    <table className="table table-bordered table-striped table-sm">
-      <thead>
-        <tr>
-          {['Id', 'First Name', 'Last Name', 'Phone', 'Gender', 'Age', 'Delete'].map(
-            (title: string, index: number, titles: string[]) => (
-              <th
-                key={index + title + Math.random()}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                onClick={index !== titles.length - 1 ? () => sortWithChoicedKey(title) : () => {}}
-                scope="col"
-              >
-                {title}
-              </th>
-            )
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {people.sort(sortWithKeyCallback).map((person: IPerson, index: number) => {
-          const deletePerson = () => dispatch(PeopleActions.deletePerson(person));
-          return (
-            <PeopleTableRow
-              key={index + person.id + Math.random()}
-              {...person}
-              deletePerson={deletePerson}
-            />
-          );
-        })}
-      </tbody>
-    </table>
+    <div>
+      <table className="table table-bordered table-striped table-sm">
+        <thead>
+          <tr>
+            {['Id', 'First Name', 'Last Name', 'Phone', 'Gender', 'Age', 'Delete'].map(
+              (title: string, index: number, titles: string[]) => (
+                <th
+                  key={index + title + Math.random()}
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
+                  onClick={index !== titles.length - 1 ? () => sortWithChoicedKey(title) : () => {}}
+                  scope="col"
+                >
+                  {title}
+                </th>
+              )
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {people.sort(sortWithKeyCallback).map((person: IPerson, index: number) => {
+            const deletePerson = () => dispatch(PeopleActions.deletePerson(person));
+            return (
+              <PeopleTableRow
+                key={index + person.id + Math.random()}
+                {...person}
+                deletePerson={deletePerson}
+              />
+            );
+          })}
+        </tbody>
+      </table>
+      <small className="form-text text-muted">
+        (Сортировка происходит нажатием на верхнюю часть колонки.Сортировка только в одном порядке)
+      </small>
+    </div>
   );
 };

@@ -1,6 +1,12 @@
 .incorrect-form-field {
-  border-color: #f44336;
   box-shadow: 0 0 0 0.2rem rgba(244, 67, 54, 0.25);
+}
+
+.incorrect-form-field[name='phone'],
+.incorrect-form-field[name='firstName'],
+.incorrect-form-field[name='lastName'],
+.incorrect-form-field[name='age'] {
+  border-color: #f44336;
 }
 
 .delete-btn {
@@ -17,6 +23,26 @@
 
 label[for='genderMale'] {
   margin-right: 7px;
+}
+
+.form-group {
+  small {
+    display: none;
+  }
+}
+
+.show-validation-errors {
+  small {
+    display: block;
+  }
+}
+
+table {
+  margin-top: 5px;
+}
+
+.age-form-group {
+  margin-top: 10px;
 }
 
 #app {
