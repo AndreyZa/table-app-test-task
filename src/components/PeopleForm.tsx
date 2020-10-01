@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { randomNum } from '../utils/randomNum';
+import { randomNum } from '../utils';
 import { PeopleActions } from '../store/PeopleActions';
 
 // @TODO: styles for table and form

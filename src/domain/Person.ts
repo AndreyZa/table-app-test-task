@@ -1,5 +1,5 @@
 import { IPerson } from './IPerson';
-import { randomNum } from '../utils/randomNum';
+import { randomNum } from '../utils';
 
 export class Person implements IPerson {
   public readonly firstName: string;
