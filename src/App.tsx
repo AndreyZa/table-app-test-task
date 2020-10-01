@@ -13,9 +13,13 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div id="app">
-      <PeopleForm />
-      <PeopleTable />
+    <div id="app" className="row">
+      <div className="col-3">
+        <PeopleForm />
+      </div>
+      <div className="col-5">
+        <PeopleTable />
+      </div>
     </div>
   );
 };
